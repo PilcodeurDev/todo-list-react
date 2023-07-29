@@ -10,7 +10,7 @@ function App() {
     { id: nanoid(8), content: "item 3" },
   ])
   const [todo, setTodo] = useState("")
-
+  const [showValidation, setShowValidation] = useState(false)
   function deleteTodo(id) {
     setTodoList(todoList.filter(todo => todo.id !== id))
   }
@@ -18,8 +18,13 @@ function App() {
   function handleSubmit(e) {
     e.preventDefault()
 
+    if (todo === "") {
+      setShowValidation(true)
+      return
+    }
     setTodoList([...todoList, { id: nanoid(), content: todo }])
     setTodo("")
+    setShowValidation(false)
   }
   return (
     <div className="h-screen">
@@ -35,6 +40,9 @@ function App() {
             onChange={e => setTodo(e.target.value)}
             className="mt-1 block w-full rounded"
           />
+          {showValidation && (
+            <p className="text-red-400">Veuillez écrire dans le champ avant d'ajouter...</p>
+          )}
           <button className="mt-4 py-2 px-2 bg-slate-50 rounded min-w-[115px]">
             Ajouter
           </button>
